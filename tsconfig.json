@@ -3,6 +3,8 @@
     "moduleResolution": "node",
     "outDir": "./dist/",
     "target": "ES2015",
-    "jsx": "react"
+    "jsx": "react",
+    // "allowSyntheticDefaultImports": true // 型チェックでdefaultImportするようにする
+    "esModuleInterop": true // 全てのインポートについてdefaultにする
   }
 }

@@ -1,7 +1,8 @@
 // import path from 'path';
-const path = require('path')
+const path = require('path');
 
 module.exports = {
+  mode: 'development',
   entry: './src/index.tsx',
   module: {
     rules: [{

@@ -1,6 +1,20 @@
-import * as React from 'react'; // jsxを使うためのもの。 ???名前つきimport害必要なのか
+import React from 'react'; // TypScriptでコンパイルする際はimport React省略不可 -> use strictがdefaultで付く
 import { render } from 'react-dom';
+import { createGlobalStyle } from 'styled-components';
+import { Editor } from './pages/editor';
 
-const Main = (<h1>Markdown Editor</h1>)
+/* GlobalStyleはスコープを無視する */
+const GlobalStyle = createGlobalStyle`
+  body * {
+    box-sizing: border-box;
+  }`;
+
+/* 他のコンポーネントをまとめあげる */
+const Main = (
+  <>
+    <GlobalStyle />
+    <Editor />
+  </>
+  )
 
 render(Main, document.getElementById('app'));

@@ -11,7 +11,7 @@ import {
 import styled from "styled-components";
 
 
-/* interface */
+// /* interface */
 interface Props {
   setText: (text: string) => void // 履歴から中身をEditorに渡すためのsetTextのみ必要となる
 };
@@ -20,6 +20,7 @@ interface Props {
 /* ===========
 History
 =========== */
+// export const History: React.FC<Props> = (props) => {
 export const History: React.FC<Props> = (props) => {
 
   const {setText} = props // propsからsetTextを分割
@@ -46,7 +47,8 @@ export const History: React.FC<Props> = (props) => {
               onClick={() => {
                 setText(memo.text) // editorのtextにmemoのtextをセットする
                 history.push('/editor') // editorページに飛ばす
-              }}>
+              }}
+            >
               <MemoTitle>{memo.title}</MemoTitle>
               <MemoText>{memo.text}</MemoText>
             </Memo>

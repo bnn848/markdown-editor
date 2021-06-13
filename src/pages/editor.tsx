@@ -8,6 +8,7 @@ import { Button } from '../components/button';
 import { SaveModal} from '../components/save_modal';
 import { Link } from 'react-router-dom';
 import { Header } from '../components/header';
+// import { useStateWithStorage } from '../hooks/use_state_with_storage';
 
 /* index.tsxでtextに関するStateを管理し、editor.tsxとhistory.tsxで利用する */
 interface Props {
@@ -15,14 +16,14 @@ interface Props {
   setText: (text: string) => void
 };
 
-
 /* ===========
 Editor
 =========== */
+// export const Editor: React.FC<Props> = (props) => { // : React.FCという型宣言(関数コンポーネントという意味)
 export const Editor: React.FC<Props> = (props) => { // : React.FCという型宣言(関数コンポーネントという意味)
 
   /* 受け取ったPropsを分割 */
-  const {text, setText} = props
+  const {text, setText} = props;
 
   /* モーダル表示 */
   const [showModal, setShowModal] = useState(false);

@@ -13,11 +13,11 @@ import { useStateWithStorage } from './hooks/use_state_with_storage';
 
 
 /* StorageKey */
-const StorageKey = '/editor:text'
+const StorageKey = '/editor:text';
 
 /* 他のコンポーネントをまとめあげる */
-const Main: React.FC = () => {
-  const [text, setText] = useStateWithStorage('', StorageKey) // カスタムコンポーネント
+const Main: React.FC =  () => {
+  const [text, setText] = useStateWithStorage('', StorageKey)
 
   return (
   <>
@@ -42,12 +42,14 @@ const Main: React.FC = () => {
   )
 };
 
-render(<Main />, document.getElementById('app'));
-
 
 
 /* GlobalStyleはスコープを無視する */
 const GlobalStyle = createGlobalStyle`
   body * {
     box-sizing: border-box;
-  }`;
+  }
+`;
+
+/* renderの後には何も記述しないこと */
+render(<Main />, document.getElementById('app'))

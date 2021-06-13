@@ -11,7 +11,7 @@ interface Props {
 
 export const SaveModal: React.FC<Props> = (props) => {
   const { onCancel, onSave } = props;
-  const [title, setTitle] = useState(dayjs().format());
+  const [title, setTitle] = useState(dayjs().toString());
 
   return (
     <Wrapper>

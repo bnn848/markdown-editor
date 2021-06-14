@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components'
-import ReactMarkdown from 'react-markdown';
+// import ReactMarkdown from 'react-markdown';
 // import * as ReactMarkdown from 'react-markdown';
 // const ReactMarkdown = require('react-markdown');
 import { putMemo } from '../indexeddb/memos';
@@ -8,7 +8,8 @@ import { Button } from '../components/button';
 import { SaveModal} from '../components/save_modal';
 import { Link } from 'react-router-dom';
 import { Header } from '../components/header';
-// import { useStateWithStorage } from '../hooks/use_state_with_storage';
+// import TestWorker from 'worker-loader!../worker/convert_markdown_worker.ts'; // test.ts記載の型チェックをした上でパスを記述
+import ConvertMarkdownWorker from 'worker-loader!../worker/convert_markdown_worker';
 
 /* index.tsxでtextに関するStateを管理し、editor.tsxとhistory.tsxで利用する */
 interface Props {
@@ -19,15 +20,29 @@ interface Props {
 /* ===========
 Editor
 =========== */
-// export const Editor: React.FC<Props> = (props) => { // : React.FCという型宣言(関数コンポーネントという意味)
 export const Editor: React.FC<Props> = (props) => { // : React.FCという型宣言(関数コンポーネントという意味)
 
-  /* 受け取ったPropsを分割 */
-  const {text, setText} = props;
-
-  /* モーダル表示 */
-  const [showModal, setShowModal] = useState(false);
+  /* ------------------------- ↓textデータを受け取る処理↓ ------------------------- */
+  const {text, setText} = props; // <--- useStateで定義
+  const [showModal, setShowModal] = useState(false);  // <--- モーダル表示
+  const [html, setHtml] = useState(''); // <--- markdown
   
+  const convertMarkdownWorker = new ConvertMarkdownWorker(); // <--- WebWorkerというマルチスレッド処理でデータを受け渡し
+  
+  // workerからデータを受け取る処理（初回レンダリング時のみ受け取ればOK）
+  useEffect(() => {
+    convertMarkdownWorker.onmessage = (event) => {
+      setHtml(event.data.html);
+    }
+  },[]);
+  
+  // workerに処理を送信する処理（Textが更新されるたびに送信する）
+  useEffect(() => {
+    convertMarkdownWorker.postMessage(text)
+  },[text]);
+  /* ------------------------- ↑textデータを受け取る処理↑ ------------------------- */
+
+
   return (
     <>
         <HeaderArea>
@@ -42,7 +57,8 @@ export const Editor: React.FC<Props> = (props) => { // : React.FCという型宣
           onChange={ e => setText(e.target.value)}  // setTextによりカスタムフックの処理が行われる
         />
         <Preview>
-          <ReactMarkdown children={text} />
+          {/* <div children={text} /> */}
+          <div dangerouslySetInnerHTML={{__html: html}} />
         </Preview>
       </Wrapper>
 
